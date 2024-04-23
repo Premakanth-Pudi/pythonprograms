@@ -1,0 +1,33 @@
+[
+  {
+    "company_name": "HDFC Bank Limited",
+    "ticker_symbol": "HDFCBANK",
+    "share_price": 1500
+  },
+  {
+      
+    "company_name": "Tata Consultancy Services Ltd.",
+    "ticker_symbol": "TCS",
+    "share_price": 3000
+  },
+  {
+    "company_name": "Apple Inc.",
+    "ticker_symbol": "ADANIENT",
+    "share_price": 3019.30
+  },
+  {
+    "company_name": "Microsoft Corporation",
+    "ticker_symbol": "MSFT",
+    "share_price": 250.50
+  },
+  {
+    "company_name": "Amazon.com Inc.",
+    "ticker_symbol": "AMZN",
+    "share_price": 3300.75
+  },
+  {
+    "company_name": "Google LLC",
+    "ticker_symbol": "GOOGL",
+    "share_price": 2800.00
+  }
+]

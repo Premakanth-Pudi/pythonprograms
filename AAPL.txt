@@ -1,0 +1,2 @@
+Date of the call: 2024-04-18
+Share price for AAPL: $150.25
