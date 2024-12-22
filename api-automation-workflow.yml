@@ -1,0 +1,92 @@
+name: API Automation Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  api-automation-workflow:
+
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_RUNNER_DEBUG: true
+      ACTIONS_STEP_DEBUG: true
+
+
+    steps:
+      
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ env.GITHUB_REF }}
+
+      
+
+      - name: Set up Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install newman and create reports directory
+        run: |
+          npm install -g newman@6.1.2
+          npm install -g newman-reporter-allure@2.15.1
+          npm install -g allure-commandline@2.29.0
+          mkdir -p ./api-automation/Reports
+
+      - name: Substitute wildcard values
+        working-directory: ./api-automation
+        run: |
+          sed -i 's|{{__AUTH_URL__}}|${{ env.AUTH_URL }}|' postman_environment.json
+          sed -i 's|{{__AUTH_SCOPE__}}|${{ env.AUTH_SCOPE }}|' postman_environment.json
+          sed -i 's|{{__AUTH_CLIENT_ID__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_ID }}|' postman_environment.json
+          sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' postman_environment.json
+          sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' postman_environment.json
+
+      - name: Run Postman Tests
+        id: testexecutionstep
+        working-directory: ./api-automation
+        run: ./PostmanTestCollectionRunner.sh
+        continue-on-error: true
+
+
+      - name: Rename report html
+        run: |
+          cd ./api-automation/allure-report
+          ls -a
+          mv index.html api-automation-report.html
+
+      - name: Upload automation report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-automation-report-artifact
+          path: ./api-automation/allure-report
+
+      - name: Checkout reports branch
+        uses: actions/checkout@v2
+        with:
+          ref: api-automation-test-reports
+          fetch-depth: 0
+
+
+
+      - name: Download automation report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-automation-report-artifact
+          path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
+
+      - name: Push files to reports-branch
+        run: |
+          now=$(date +'%Y-%m-%d')
+          git config --global user.email "premakanth.pudi@jda.com"
+          git config --global user.name "Premakanth Pudi"
+          git add .
+          git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
+          git push --set-upstream origin api-automation-test-reports
+
+      - name: Delete artifact
+        uses: geekyeggo/delete-artifact@v1
+        with:
+          name: api-automation-report-artifact
+
