@@ -1,0 +1,1789 @@
+{
+  "info": {
+    "_postman_id": "e2a5fafc-29c5-480d-82da-292f51b0f830",
+    "name": "Sustainability Svc",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36512610"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "var token = jsonData.access_token;",
+                  "pm.environment.set(\"BEARER_TOKEN\", token);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "{{AUTH_CLIENT_SECRET}}",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "{{AUTH_CLIENT_ID}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials",
+                  "type": "text"
+                },
+                {
+                  "key": "scope",
+                  "value": "{{AUTH_SCOPE}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{AUTH_URL}}",
+              "host": [
+                "{{AUTH_URL}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Mapping Interface",
+      "item": [
+        {
+          "name": "Fetch list of application mapping interfaces the realm is entitled to",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/mappingInterfaces",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "mappingInterfaces"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch categories and sectors applicable to given mapping interface",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/mappingInterfaces/Purchased%20Goods/sectorCategories",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "mappingInterfaces",
+                "Purchased%20Goods",
+                "sectorCategories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid authorization token value",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Filter",
+      "item": [
+        {
+          "name": "Fetch list of relevant filters for a given sector-category and also their possible values",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/filters?sector=Transport&category=Road Freight",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "filters"
+              ],
+              "query": [
+                {
+                  "key": "sector",
+                  "value": "Transport"
+                },
+                {
+                  "key": "category",
+                  "value": "Road Freight"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dimension, Hierarchy, Level, Members",
+      "item": [
+        {
+          "name": "Fetch dimensions",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\" Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains dimensions array\",function(){\r",
+                  "    const responseJson=pm.response.json();\r",
+                  "    pm.expect(responseJson).to.have.property('dimensions').that.is.an('array');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each dimension object contains id and name\", function () {\r",
+                  "    const jsonData = pm.response.json();\r",
+                  "    jsonData.dimensions.forEach(dimension => {\r",
+                  "        pm.expect(dimension).to.have.property('id');\r",
+                  "        pm.expect(dimension).to.have.property('name');\r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000000/dimensions",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000000",
+                "dimensions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch hierarchies",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\" Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains hierarchies array\",function(){\r",
+                  "    pm.expect(responseJson).to.have.property('hierarchies').that.is.an('array');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each hierarchy object contains hierarchyId and hierarchyName\", function () {\r",
+                  "    responseJson.hierarchies.forEach(dimension => {\r",
+                  "        pm.expect(dimension).to.have.property('hierarchyId');\r",
+                  "        pm.expect(dimension).to.have.property('hierarchyName');\r",
+                  "    });\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000001/dimensions/ITEM/hierarchies",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000001",
+                "dimensions",
+                "ITEM",
+                "hierarchies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch hierarchy levels",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\" Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains hierarchyLevels array\",function(){\r",
+                  "    const responseJson=pm.response.json();\r",
+                  "    pm.expect(responseJson).to.have.property('hierarchyLevels').that.is.an('array');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each hierarchyLevels object contains id, name and order\", function () {\r",
+                  "    responseJson.hierarchyLevels.forEach(dimension => {\r",
+                  "        pm.expect(dimension).to.have.property('id');\r",
+                  "        pm.expect(dimension).to.have.property('name');\r",
+                  "        pm.expect(dimension).to.have.property('order');   \r",
+                  "    });\r",
+                  "});\r",
+                  "\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000001/dimensions/LOCATION/hierarchies/RETAILLOCATIONHIERARCHY/levels",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000001",
+                "dimensions",
+                "LOCATION",
+                "hierarchies",
+                "RETAILLOCATIONHIERARCHY",
+                "levels"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch members",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\" Content-Type is JSON\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response contains members array\",function(){\r",
+                  "    const responseJson=pm.response.json();\r",
+                  "    pm.expect(responseJson).to.have.property('members').that.is.an('array');\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Each members object contains id, name and order\", function () {\r",
+                  "    responseJson.members.forEach(dimension => {\r",
+                  "        pm.expect(dimension).to.have.property('id');\r",
+                  "        pm.expect(dimension).to.have.property('name');   \r",
+                  "    });\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"applicationModuleId\" : \"2002000014\",\n    \"mappingInterface\": \"Transportation\",\n    \"dimensionGroups\": [\n        {\"groupMembers\": [\n        {\n            \"dimensionId\": \"TransitMode\",\n            \"memberId\": \"Road\"\n        },\n        {\n            \"dimensionId\": \"EquipmentType\",\n            \"memberId\": \"48Ft\"\n        },\n        {\n            \"dimensionId\": \"FuelType\",\n            \"memberId\": \"Diesel\"\n        }]}\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000000/dimensions/EquipmentType/members",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000000",
+                "dimensions",
+                "EquipmentType",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "parentMemberId",
+                  "value": "A",
+                  "disabled": true
+                },
+                {
+                  "key": "parentLevelId",
+                  "value": "ALLPRODUCTS",
+                  "disabled": true
+                },
+                {
+                  "key": "pageNumber",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "levelId",
+                  "value": "COUNTRY",
+                  "disabled": true
+                },
+                {
+                  "key": "hierarchyId",
+                  "value": "RETAILLOCATIONHIERARCHY",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid applicationModuleID format given in url",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 500\", function () {\r",
+                  "    pm.response.to.have.status(500);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is INTERNAL_SERVER_ERROR\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"INTERNAL_SERVER_ERROR\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: Internal Error\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"Internal Error\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/applications/invalid_applicationID/dimensions\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/applications/invalid_applicationID/dimensions\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/invalid_applicationID/dimensions",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "invalid_applicationID",
+                "dimensions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid applicationModuleID given in url",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 403\", function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is FORBIDDEN\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"FORBIDDEN\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is:Given application module '2002000004' either doesn't exist or is not entitled to be used.\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"Given application module '2002000004' either doesn't exist or is not entitled to be used.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/applications/2002000004/dimensions\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/applications/2002000004/dimensions\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000004/dimensions",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000004",
+                "dimensions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid dimension id given in url for heirarchies",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: Given dimension id does not exist: InvalidDimensionID.\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"Given dimension id does not exist: InvalidDimensionID\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/applications/2002000001/dimensions/InvalidDimensionID/hierarchies\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/applications/2002000001/dimensions/InvalidDimensionID/hierarchies\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000001/dimensions/InvalidDimensionID/hierarchies",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000001",
+                "dimensions",
+                "InvalidDimensionID",
+                "hierarchies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid hierarchy id is given in url for hierachy levels",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/applications/2002000001/dimensions/LOCATION/hierarchies/InvalidHierarchyID/levels",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "applications",
+                "2002000001",
+                "dimensions",
+                "LOCATION",
+                "hierarchies",
+                "InvalidHierarchyID",
+                "levels"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Member Mapping",
+      "item": [
+        {
+          "name": "Fetch member mappings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"applicationModuleId\":\"2002000000\",\n   \"mappingInterface\":\"Transportation\",\n   \"dimensionGroups\":[\n      {\n         \"groupMembers\":[\n            {\n                        \"dimensionId\": \"TransitMode\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"Road\"\n                    },\n                    {\n                        \"dimensionId\": \"EquipmentType\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"20STD\"\n                    },\n                    {\n                        \"dimensionId\": \"FuelType\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"Diesel\"\n                    }\n         ]\n      }\n   ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Upsert member mappings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"applicationModuleId\":2002000000,\n   \"mappingInterface\":\"Transportation\",\n   \"mappings\":[\n      {\n         \"dimensionGroup\":{\n            \"groupMembers\":[\n               {\n                        \"dimensionId\": \"TransitMode\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"Road\"\n                    },\n                    {\n                        \"dimensionId\": \"EquipmentType\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"20STD\"\n                    },\n                    {\n                        \"dimensionId\": \"FuelType\",\n                        \"hierarchyId\": null,\n                        \"levelId\": null,\n                        \"memberId\": \"Diesel\"\n                    }\n            ]\n         },\n         \"mappedActivityIds\":[\n           \"freight_vehicle-vehicle_type_van_refrigerated-fuel_source_diesel_5_percent_biodiesel_blend-vehicle_weight_lte_3.5t-distance_uplift_included\"\n         ]\n      }\n   ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsUpserts",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsUpserts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for empty request body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson= pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "pm.test(\"Response should contain error message\", function () {\r",
+                  "    pm.expect(responseJson).to.have.property(\"errors\");\r",
+                  "});\r",
+                  "pm.test(\"Status response BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\r\n//    \"applicationModuleId\":\"2002000014\",\r\n//    \"mappingInterface\":\"Transportation\",\r\n//    \"dimensionGroups\":[\r\n//       {\r\n//          \"groupMembers\":[\r\n//             {\r\n//                         \"dimensionId\":\"EquipmentType\",\r\n//                         \"hierarchyId\":1000,\r\n//                         \"levelId\": null,\r\n//                         \"memberId\": \"Road\",\r\n//                         \"unexpectedField\": \"unexpectedValue\"\r\n                        \r\n//                     },\r\n//                     {\r\n//                         \"dimensionId\": \"EquipmentType\",\r\n//                         \"hierarchyId\": null,\r\n//                         \"levelId\": null,\r\n//                         \"memberId\": \"20STD\"\r\n//                     },\r\n//                     {\r\n//                         \"dimensionId\": \"FuelType\",\r\n//                         \"hierarchyId\": null,\r\n//                         \"levelId\": null,\r\n//                         \"memberId\": \"Diesel\"\r\n//                     }\r\n//          ]\r\n//       }\r\n//    ]\r\n// }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for Invalid url",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "pm.test(\"Error Message: \", function(){\r",
+                  "    pm.expect(jsonData.ErrorMessage).to.include(\"BY-API-B50001 Not Found: Unable to match incoming request to an operation.\")\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?invalidurl",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "invalidurl",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for empty applicationModuleId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: applicationModuleId: Application Module Id is mandatory.\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"applicationModuleId: Application Module Id is mandatory.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"applicationModuleId\": \"\",\r\n    \"mappingInterface\": \"Transportation\",\r\n    \"mappings\": [\r\n        {\r\n            \"dimensionGroup\": {\r\n                \"groupId\": \"625f1c72-b666-4d16-a0c7-332bd14d474d\",\r\n                \"groupMembers\": [\r\n                    {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n                ]\r\n            },\r\n            \"mappedSectorCategory\": null,\r\n            \"mappedActivityIds\": [\r\n                \"freight_vehicle-vehicle_type_van_refrigerated-fuel_source_diesel_5_percent_biodiesel_blend-vehicle_weight_lte_3.5t-distance_uplift_included\"\r\n            ]\r\n        }\r\n    ],\r\n    \"meta\": {\r\n        \"currentPage\": 1,\r\n        \"totalResults\": 1,\r\n        \"next\": null\r\n    }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for empty mappingInterface",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: Mapping Interface Name is mandatory and cannot be empty or blank..\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"mappingInterface: Mapping Interface Name is mandatory and cannot be empty or blank.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for empty dimensionId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: dimensionId is mandatory and cannot be empty or blank..\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"dimensionGroups[0].groupMembers[0].dimensionId: Dimension Id is mandatory and cannot be empty or blank.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for empty memberId",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 400\", function () {\r",
+                  "    pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is BAD_REQUEST\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"BAD_REQUEST\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: dimensionId is mandatory and cannot be empty or blank..\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"dimensionGroups[0].groupMembers[0].memberId: Member Id is mandatory and cannot be empty or blank.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for invalid moduleID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 403\", function () {\r",
+                  "    pm.response.to.have.status(403);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is FORBIDDEN\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"FORBIDDEN\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: applicationModuleId either doesn't exist or is not entitled to be used.\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"Given application module '2002000009' either doesn't exist or is not entitled to be used.\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000009\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for invalid mappingInterface",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is NOT_FOUND\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"NOT_FOUND\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: No mapping interface found for given name 'invalid' and application-module '2002000000'\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"No mapping interface found for given name 'invalid' and application-module '2002000000'\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"invalid\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid endpoint",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const jsonData = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "pm.test(\"Error Message: \", function(){\r",
+                  "    pm.expect(jsonData.ErrorMessage).to.include(\"BY-API-B50001 Not Found: Unable to match incoming request to an operation.\")\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/invalidendpoint?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "invalidendpoint"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Validation for Invalid url parameters",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson=pm.response.json();\r",
+                  "console.log(\"Response: \", responseJson);\r",
+                  "\r",
+                  "pm.test(\"Status code is 405\", function () {\r",
+                  "    pm.response.to.have.status(405);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status response is METHOD_NOT_ALLOWED\", function(){\r",
+                  "    pm.expect(responseJson.status).to.eql(\"METHOD_NOT_ALLOWED\")\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Error Message is: Method Not Allowed\", function(){\r",
+                  "    pm.expect(responseJson.errors).to.include(\"Method Not Allowed\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Path is /sustainability/v1/activityMappingsFetch\", function(){\r",
+                  "    pm.expect(responseJson.path).to.eql(\"/sustainability/v1/activityMappingsFetch\") \r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=INVALID",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "INVALID"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Content Validation for member mappings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseJson = pm.response.json();\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response Structure is Valid\", function () {\r",
+                  "    pm.expect(responseJson).to.have.property(\"applicationModuleId\");\r",
+                  "    pm.expect(responseJson).to.have.property(\"mappingInterface\");\r",
+                  "    pm.expect(responseJson).to.have.property(\"mappings\");\r",
+                  "    pm.expect(responseJson).to.have.property(\"meta\");\r",
+                  "    pm.expect(responseJson.applicationModuleId).to.eql(2002000000);\r",
+                  "    pm.expect(responseJson.mappingInterface).to.eql(\"Transportation\");\r",
+                  "\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"applicationModuleId\":\"2002000000\",\r\n   \"mappingInterface\":\"Transportation\",\r\n   \"dimensionGroups\":[\r\n      {\r\n         \"groupMembers\":[\r\n            {\r\n                        \"dimensionId\": \"TransitMode\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Road\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"EquipmentType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"20STD\"\r\n                    },\r\n                    {\r\n                        \"dimensionId\": \"FuelType\",\r\n                        \"hierarchyId\": null,\r\n                        \"levelId\": null,\r\n                        \"memberId\": \"Diesel\"\r\n                    }\r\n         ]\r\n      }\r\n   ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/activityMappingsFetch?_useMethod=GET",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "activityMappingsFetch"
+              ],
+              "query": [
+                {
+                  "key": "_useMethod",
+                  "value": "GET"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Emission Activities",
+      "item": [
+        {
+          "name": "Fetch activities with optional filters",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{SUST_SVC_BASE_URL}}/v1/emissionActivities?sector=Consumer Goods and Services&category=Food/Beverages/Tobacco",
+              "host": [
+                "{{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "emissionActivities"
+              ],
+              "query": [
+                {
+                  "key": "sector",
+                  "value": "Consumer Goods and Services"
+                },
+                {
+                  "key": "filterKeys",
+                  "value": "vehicle_type_van_refrigerated",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Food/Beverages/Tobacco"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid characters in parameters",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{BEARER_TOKEN}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "POST {{SUST_SVC_BASE_URL}}/v1/emissionActivities?sector=Consumer Goods!& and Services&category=Food/Beverages/Tobacco\n",
+              "host": [
+                "POST {{SUST_SVC_BASE_URL}}"
+              ],
+              "path": [
+                "v1",
+                "emissionActivities"
+              ],
+              "query": [
+                {
+                  "key": "sector",
+                  "value": "Consumer Goods!"
+                },
+                {
+                  "key": " and Services",
+                  "value": null
+                },
+                {
+                  "key": "category",
+                  "value": "Food/Beverages/Tobacco\n"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Content validation",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "COLLECTION_DATA",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
