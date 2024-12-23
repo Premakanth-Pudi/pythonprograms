@@ -33,7 +33,14 @@ jobs:
           npm install -g newman-reporter-allure@2.15.1
           npm install -g allure-commandline@2.29.0
           mkdir -p ./api-automation/Reports
+          
+      - name: Run Postman Tests
+        id: testexecutionstep
+        working-directory: ./api-automation
+        run: ./PostmanTestCollectionRunner.sh
+        continue-on-error: true
 
+        
       - name: Substitute wildcard values
         working-directory: ./api-automation
         run: |
@@ -43,11 +50,7 @@ jobs:
           sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' postman_environment.json
           sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' postman_environment.json
 
-      - name: Run Postman Tests
-        id: testexecutionstep
-        working-directory: ./api-automation
-        run: ./PostmanTestCollectionRunner.sh
-        continue-on-error: true
+      
 
 
       - name: Rename report html
