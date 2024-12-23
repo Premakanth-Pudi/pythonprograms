@@ -8,9 +8,6 @@ jobs:
   api-automation-workflow:
 
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_RUNNER_DEBUG: true
-      ACTIONS_STEP_DEBUG: true
 
 
     steps:
@@ -35,7 +32,6 @@ jobs:
           mkdir -p ./api-automation/Reports
 
       - name: Substitute wildcard values
-        working-directory: ./api-automation
         run: |
           sed -i 's|{{__AUTH_URL__}}|${{ env.AUTH_URL }}|' postman_environment.json
           sed -i 's|{{__AUTH_SCOPE__}}|${{ env.AUTH_SCOPE }}|' postman_environment.json
