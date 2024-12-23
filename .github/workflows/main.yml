@@ -37,11 +37,11 @@ jobs:
       - name: Substitute wildcard values
         working-directory: ./api-automation
         run: |
-          sed -i 's|{{__AUTH_URL__}}|${{ env.AUTH_URL }}|' postman_environment.json
-          sed -i 's|{{__AUTH_SCOPE__}}|${{ env.AUTH_SCOPE }}|' postman_environment.json
-          sed -i 's|{{__AUTH_CLIENT_ID__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_ID }}|' postman_environment.json
-          sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' postman_environment.json
-          sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' postman_environment.json
+          sed -i 's|{{__AUTH_URL__}}|${{ env.AUTH_URL }}|' api-automation/postman_environment.json
+          sed -i 's|{{__AUTH_SCOPE__}}|${{ env.AUTH_SCOPE }}|' api-automation/postman_environment.json
+          sed -i 's|{{__AUTH_CLIENT_ID__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_ID }}|' api-automation/postman_environment.json
+          sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' api-automation/postman_environment.json
+          sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' api-automation/postman_environment.json
 
       - name: Run Postman Tests
         id: testexecutionstep
