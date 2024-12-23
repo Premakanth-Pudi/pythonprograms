@@ -79,7 +79,7 @@ jobs:
       - name: Push files to reports-branch
         run: |
           now=$(date +'%Y-%m-%d')
-          git config --global user.email "premakanth.pudi@jda.com"
+          git config --global user.email "premkanthpudi2002@gmail.com"
           git config --global user.name "Premakanth Pudi"
           git add .
           git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
