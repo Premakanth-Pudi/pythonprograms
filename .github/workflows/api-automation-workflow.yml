@@ -43,7 +43,7 @@ jobs:
       - name: Run Postman Tests
         id: testexecutionstep
         working-directory: ./api-automation
-        run: ./PostmanTestCollectionRunner.sh
+        run: ../PostmanTestCollectionRunner.sh
         continue-on-error: true
 
 
