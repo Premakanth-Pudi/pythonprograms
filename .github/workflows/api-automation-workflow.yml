@@ -28,10 +28,11 @@ jobs:
 
       - name: Install newman and create reports directory
         run: |
-          npm install -g newman@6.1.2
-          npm install -g newman-reporter-allure@2.15.1
-          npm install -g allure-commandline@2.29.0
+          npm install -g newman@latest
+          npm install -g newman-reporter-allure@latest
+          npm install -g allure-commandline@latest
           mkdir -p ./api-automation/Reports
+
 
       - name: Substitute wildcard values
         working-directory: ./api-automation
