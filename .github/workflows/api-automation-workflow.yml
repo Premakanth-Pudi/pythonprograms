@@ -35,6 +35,15 @@ jobs:
           mkdir -p ./api-automation/Reports
           echo "Reports directory created: $(ls -al ./api-automation)"
 
+      - name: Commit and push Reports folder to master branch
+        run: |
+          git config --global user.name "premakanth-pudi"
+          git config --global user.email "premkanthpudi2002@gmail.com"
+          git add ./api-automation/Reports
+          git commit -m "Add Reports directory"
+          git push origin master
+
+
 
 
       - name: Substitute wildcard values
