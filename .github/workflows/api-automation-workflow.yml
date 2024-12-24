@@ -1,6 +1,8 @@
 name: API Automation Workflow
-
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
@@ -8,9 +10,6 @@ jobs:
   api-automation-workflow:
 
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_RUNNER_DEBUG: true
-      ACTIONS_STEP_DEBUG: true
 
 
     steps:
