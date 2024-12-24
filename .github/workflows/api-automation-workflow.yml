@@ -80,7 +80,7 @@ jobs:
       - name: Checkout reports branch
         uses: actions/checkout@v2
         with:
-          ref: api-automation-test-reports
+          ref: master
           fetch-depth: 0
 
 
