@@ -43,8 +43,11 @@ jobs:
       - name: Run Postman Tests
         id: testexecutionstep
         working-directory: ./api-automation
-        run: ../PostmanTestCollectionRunner.sh
+        run: |
+          chmod +x ../PostmanTestCollectionRunner.sh
+          ../PostmanTestCollectionRunner.sh
         continue-on-error: true
+
 
 
       - name: Rename report html
