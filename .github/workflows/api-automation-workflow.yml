@@ -54,12 +54,16 @@ jobs:
         continue-on-error: true
 
       - name: Commit and push Reports folder to master branch
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # This references the secret stored in GitHub
         run: |
           git config --global user.name "premakanth-pudi"
           git config --global user.email "premkanthpudi2002@gmail.com"
           git add ./api-automation/Reports
           git commit -m "Add Reports directory"
+          git remote set-url origin https://$GH_TOKEN@github.com/Premakanth-Pudi/pythonprograms.git
           git push origin master
+
 
       - name: Rename report html
         run: |
