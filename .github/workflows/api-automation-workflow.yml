@@ -42,11 +42,15 @@ jobs:
           sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' postman_environment.json
           sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' postman_environment.json
 
+      - name: Set execute permissions for PostmanTestCollectionRunner.sh
+        run: chmod +x ./api-automation/PostmanTestCollectionRunner.sh
+
       - name: Run Postman Tests
         id: testexecutionstep
         working-directory: ./api-automation
         run: ./PostmanTestCollectionRunner.sh
         continue-on-error: true
+
 
 
       - name: Rename report html
