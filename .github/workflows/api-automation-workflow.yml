@@ -86,16 +86,17 @@ jobs:
         run: |
           git config --global user.name "premakanth-pudi"
           git config --global user.email "premkanthpudi2002@gmail.com"
-          if [ -d "./Reports" ]; then
+          if [ -d "./api-automation/Reports" ]; then
             echo "Reports directory found. Proceeding to add to Git."
-            git add ./Reports
+            git add ./api-automation/Reports
           else
-            echo "Reports directory not found!"
-            exit 1
+             echo "Reports directory not found!"
+             exit 1
           fi
           git commit -m "Add Reports directory"
           git remote set-url origin https://$GH_TOKEN@github.com/Premakanth-Pudi/pythonprograms.git
           git push origin master
+
 
 
       - name: Delete artifact
