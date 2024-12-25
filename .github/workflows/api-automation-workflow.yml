@@ -88,19 +88,23 @@ jobs:
 
       - name: Configure Git for pushing
         run: |
-          git config --global user.name "premakanth-pudi"
-          git config --global user.email "premkanthpudi2002@gmail.com"
+          echo "Current working directory: $(pwd)"
+          echo "Listing files and directories:"
+          ls -R
+
+          # Explicitly check for Reports directory
           if [ -d "./api-automation/Reports" ]; then
             echo "Reports directory found. Proceeding to add to Git."
             git add ./api-automation/Reports
           else
-             echo "Reports directory not found!"
-             exit 1
+            echo "Reports directory not found!"
+            exit 1
           fi
+
+          # Commit and push changes
           git commit -m "Add Reports directory"
           git remote set-url origin https://$GH_TOKEN@github.com/Premakanth-Pudi/pythonprograms.git
           git push origin master
-
 
 
       - name: Delete artifact
