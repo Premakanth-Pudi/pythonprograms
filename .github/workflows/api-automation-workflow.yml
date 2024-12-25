@@ -34,6 +34,10 @@ jobs:
           npm install -g allure-commandline@latest
           mkdir -p ./api-automation/Reports
           echo "Reports directory created: $(ls -al ./api-automation)"
+      - name: Debug Directory Structure
+        run: |
+          echo "Current working directory: $(pwd)"
+          ls -R
 
       - name: Substitute wildcard values
         working-directory: ./api-automation
