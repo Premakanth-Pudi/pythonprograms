@@ -82,16 +82,21 @@ jobs:
       #     name: api-automation-report-artifact
       #     path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
 
-      - name: Commit and push Reports folder to master branch
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # This references the secret stored in GitHub
+      - name: Configure Git for pushing
         run: |
           git config --global user.name "premakanth-pudi"
           git config --global user.email "premkanthpudi2002@gmail.com"
-          git add ./api-automation/Reports
+          if [ -d "./Reports" ]; then
+            echo "Reports directory found. Proceeding to add to Git."
+            git add ./Reports
+          else
+            echo "Reports directory not found!"
+            exit 1
+          fi
           git commit -m "Add Reports directory"
           git remote set-url origin https://$GH_TOKEN@github.com/Premakanth-Pudi/pythonprograms.git
           git push origin master
+
 
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v1
