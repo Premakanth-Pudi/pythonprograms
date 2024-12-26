@@ -1,5 +1,5 @@
-POSTMAN_COLLECTION_PATH="./api-automation/postman_collection.json"
-POSTMAN_ENVIRONMENT_PATH="./api-automation/postman_environment.json"
+POSTMAN_COLLECTION_PATH="postman_collection.json"
+POSTMAN_ENVIRONMENT_PATH="postman_environment.json"
 REPORT_PATH="./api-automation/Reports"
 ALLURE_REPORT_PATH="./api-automation/allure-report"
 
