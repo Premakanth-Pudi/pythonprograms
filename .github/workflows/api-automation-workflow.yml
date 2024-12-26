@@ -62,7 +62,7 @@ jobs:
         id: testexecutionstep
         working-directory: ./api-automation
         run: |
-           ./api-automation/postman_test_report.sh || true  # Allow workflow to continue even if tests fail
+           ./api-automation/PostmanTestCollectionRunner.sh || true  # Allow workflow to continue even if tests fail
             mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
             allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
         
