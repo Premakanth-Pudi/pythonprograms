@@ -108,7 +108,7 @@ jobs:
           git config --global user.name "Premakanth-Pudi"
           git add .
           git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
-          git push --set-upstream origin api-automation-test-reports
+          git push --set-upstream origin master
 
 
       - name: Delete artifact
