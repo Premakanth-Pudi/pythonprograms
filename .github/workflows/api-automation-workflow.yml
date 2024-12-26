@@ -78,11 +78,11 @@ jobs:
           ref: master
           fetch-depth: 0
           
-      - name: Download automation report artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: api-automation-report-artifact
-          path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
+      # - name: Download automation report artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: api-automation-report-artifact
+      #     path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
 
       - name: Push files to reports-branch
         run: |
