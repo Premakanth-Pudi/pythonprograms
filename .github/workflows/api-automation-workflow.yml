@@ -19,7 +19,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ env.GITHUB_REF }}
 
-      
+      - name: Set up JDK 23
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+
+
+
 
       - name: Set up Node 16
         uses: actions/setup-node@v3
@@ -32,7 +39,7 @@ jobs:
           npm install -g newman@latest
           npm install -g newman-reporter-allure@latest
           npm install -g allure-commandline@latest
-          mkdir -p ./api-automation/Reports
+          mkdir -p ./api-automation/Reports      #Ensure reports folder exists
           echo "Reports directory created: $(ls -al ./api-automation)"
       - name: Debug Directory Structure
         run: |
@@ -54,8 +61,11 @@ jobs:
       - name: Run Postman Tests
         id: testexecutionstep
         working-directory: ./api-automation
-        run: ./PostmanTestCollectionRunner.sh
-        continue-on-error: true
+        run: |
+           ./api-automation/postman_test_report.sh || true  # Allow workflow to continue even if tests fail
+            mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
+            allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
+        
 
       
 
