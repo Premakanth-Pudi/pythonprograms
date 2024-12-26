@@ -55,30 +55,17 @@ jobs:
           sed -i 's|{{__AUTH_CLIENT_SECRET__}}|${{ secrets.API_AUTOMATION_AUTH_CLIENT_SECRET }}|' postman_environment.json
           sed -i 's|{{__SUST_SVC_BASE_URL__}}|${{ env.SUST_SVC_BASE_URL }}|' postman_environment.json
 
-      - name: Set execute permissions for PostmanTestCollectionRunner.sh
-        run: chmod +x ./api-automation/PostmanTestCollectionRunner.sh
+      # - name: Set execute permissions for PostmanTestCollectionRunner.sh
+      #   run: chmod +x ./api-automation/PostmanTestCollectionRunner.sh
 
-      - name: Run Postman Tests
-        id: testexecutionstep
-        working-directory: ./api-automation
-        run: ./PostmanTestCollectionRunner.sh
-        continue-on-error: true
-
-      - name: Verify Reports and Allure Report
+      - name: Run Postman tests and generate report
         run: |
-          if [ -d ./api-automation/Reports ]; then
-            echo "Reports directory exists."
-          else
-            echo "Reports directory not found. Creating it now."
-            mkdir -p ./api-automation/Reports
-          fi
+          chmod +x ./api-automation/postman_test_report.sh 
+          ./api-automation/PostmanTestCollectionRunner.sh || true  # Allow workflow to continue even if tests fail
+          mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
+          allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
 
-          if [ -d ./api-automation/allure-report ]; then
-            echo "Allure report successfully generated."
-          else
-            echo "Allure report not found!"
-            exit 1
-          fi
+      
         
 
       
