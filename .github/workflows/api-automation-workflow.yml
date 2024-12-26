@@ -96,25 +96,14 @@ jobs:
       #     name: api-automation-report-artifact
       #     path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
 
-      - name: Configure Git for pushing
+      - name: Push files to reports-branch
         run: |
-          echo "Current working directory: $(pwd)"
-          echo "Listing files and directories:"
-          ls -R
-
-          # Explicitly check for Reports directory
-          if [ -d "./api-automation/Reports" ]; then
-            echo "Reports directory found. Proceeding to add to Git."
-            git add ./api-automation/Reports
-          else
-            echo "Reports directory not found!"
-            exit 1
-          fi
-
-          # Commit and push changes
-          git commit -m "Add Reports directory"
-          git remote set-url origin https://$GH_TOKEN@github.com/Premakanth-Pudi/pythonprograms.git
-          git push origin master
+          now=$(date +'%Y-%m-%d')
+          git config --global user.email "abhinaba.chakraborty@jda.com"
+          git config --global user.name "Abhinaba Chakraborty"
+          git add .
+          git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
+          git push --set-upstream origin api-automation-test-reports
 
 
       - name: Delete artifact
