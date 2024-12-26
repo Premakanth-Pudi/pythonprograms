@@ -61,10 +61,24 @@ jobs:
       - name: Run Postman Tests
         id: testexecutionstep
         working-directory: ./api-automation
+        run: ./PostmanTestCollectionRunner.sh
+        continue-on-error: true
+
+      - name: Verify Reports and Allure Report
         run: |
-           ./api-automation/PostmanTestCollectionRunner.sh || true  # Allow workflow to continue even if tests fail
-            mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
-            allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
+          if [ -d ./api-automation/Reports ]; then
+            echo "Reports directory exists."
+          else
+            echo "Reports directory not found. Creating it now."
+            mkdir -p ./api-automation/Reports
+          fi
+
+          if [ -d ./api-automation/allure-report ]; then
+            echo "Allure report successfully generated."
+          else
+            echo "Allure report not found!"
+            exit 1
+          fi
         
 
       
@@ -99,8 +113,8 @@ jobs:
       - name: Push files to reports-branch
         run: |
           now=$(date +'%Y-%m-%d')
-          git config --global user.email "abhinaba.chakraborty@jda.com"
-          git config --global user.name "Abhinaba Chakraborty"
+          git config --global user.email "premkanthpudi2002@gmail.com"
+          git config --global user.name "Premakanth-Pudi"
           git add .
           git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
           git push --set-upstream origin api-automation-test-reports
