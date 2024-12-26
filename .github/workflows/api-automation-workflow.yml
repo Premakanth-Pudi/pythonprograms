@@ -25,9 +25,6 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-
-
-
       - name: Set up Node 16
         uses: actions/setup-node@v3
         with:
@@ -35,16 +32,10 @@ jobs:
 
       - name: Install newman and create reports directory
         run: |
-          echo "Current working directory: $(pwd)"
           npm install -g newman@latest
           npm install -g newman-reporter-allure@latest
           npm install -g allure-commandline@latest
           mkdir -p ./api-automation/Reports      #Ensure reports folder exists
-          echo "Reports directory created: $(ls -al ./api-automation)"
-      - name: Debug Directory Structure
-        run: |
-          echo "Current working directory: $(pwd)"
-          ls -R
 
       - name: Substitute wildcard values
         working-directory: ./api-automation
@@ -69,23 +60,29 @@ jobs:
           mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
           allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
 
-      
-        
-
-      
-
-
-      # - name: Rename report html
-      #   run: |
-      #     cd ./api-automation/allure-report
-      #     ls -a
-      #     mv index.html api-automation-report.html
+      - name: Rename report html
+        run: |
+          cd ./api-automation/allure-report
+          ls -a
+          mv index.html api-automation-report.html
 
       - name: Upload automation report as artifact
         uses: actions/upload-artifact@v4
         with:
           name: api-automation-report-artifact
           path: ./api-automation/allure-report
+
+      - name: Checkout reports branch
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          fetch-depth: 0
+          
+      - name: Download automation report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-automation-report-artifact
+          path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
 
       - name: Push files to reports-branch
         run: |
@@ -95,23 +92,6 @@ jobs:
           git add .
           git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
           git push --set-upstream origin master
-
-      # - name: Checkout reports branch
-      #   uses: actions/checkout@v2
-      #   with:
-      #     ref: master
-      #     fetch-depth: 0
-
-
-
-      # - name: Download automation report artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: api-automation-report-artifact
-      #     path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
-
-      
-
 
       - name: Delete artifact
         uses: geekyeggo/delete-artifact@v1
