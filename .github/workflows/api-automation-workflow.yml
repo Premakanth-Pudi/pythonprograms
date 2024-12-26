@@ -87,11 +87,20 @@ jobs:
           name: api-automation-report-artifact
           path: ./api-automation/allure-report
 
-      - name: Checkout reports branch
-        uses: actions/checkout@v2
-        with:
-          ref: master
-          fetch-depth: 0
+      - name: Push files to reports-branch
+        run: |
+          now=$(date +'%Y-%m-%d')
+          git config --global user.email "premkanthpudi2002@gmail.com"
+          git config --global user.name "Premakanth-Pudi"
+          git add .
+          git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
+          git push --set-upstream origin master
+
+      # - name: Checkout reports branch
+      #   uses: actions/checkout@v2
+      #   with:
+      #     ref: master
+      #     fetch-depth: 0
 
 
 
@@ -101,14 +110,7 @@ jobs:
       #     name: api-automation-report-artifact
       #     path: ${{ env.ENV_SPECIFIC_REPORT_FOLDER }}/latest/
 
-      - name: Push files to reports-branch
-        run: |
-          now=$(date +'%Y-%m-%d')
-          git config --global user.email "premkanthpudi2002@gmail.com"
-          git config --global user.name "Premakanth-Pudi"
-          git add .
-          git commit -m "Publishing ${{ github.event.inputs.env }} automation report for $now"
-          git push --set-upstream origin master
+      
 
 
       - name: Delete artifact
