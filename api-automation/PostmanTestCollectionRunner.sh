@@ -1,7 +1,7 @@
 POSTMAN_COLLECTION_PATH="postman_collection.json"
 POSTMAN_ENVIRONMENT_PATH="postman_environment.json"
-REPORT_PATH="./api-automation/Reports"
-ALLURE_REPORT_PATH="./api-automation/allure-report"
+REPORT_PATH="Reports"
+ALLURE_REPORT_PATH="allure-report"
 
 mkdir -p $REPORT_PATH
 
