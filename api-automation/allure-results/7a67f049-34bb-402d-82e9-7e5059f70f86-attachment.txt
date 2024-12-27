@@ -1,0 +1,12 @@
+const responseJson= pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 400", function () {
+    pm.response.to.have.status(400);
+});
+pm.test("Response should contain error message", function () {
+    pm.expect(responseJson).to.have.property("errors");
+});
+pm.test("Status response BAD_REQUEST", function(){
+    pm.expect(responseJson.status).to.eql("BAD_REQUEST")
+});

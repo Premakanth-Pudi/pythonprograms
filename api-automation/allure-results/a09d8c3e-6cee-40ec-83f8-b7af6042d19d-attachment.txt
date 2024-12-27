@@ -1,0 +1,8 @@
+const jsonData = pm.response.json();
+
+pm.test("Status code is 404", function () {
+    pm.response.to.have.status(404);
+});
+pm.test("Error Message: ", function(){
+    pm.expect(jsonData.ErrorMessage).to.include("BY-API-B50001 Not Found: Unable to match incoming request to an operation.")
+});

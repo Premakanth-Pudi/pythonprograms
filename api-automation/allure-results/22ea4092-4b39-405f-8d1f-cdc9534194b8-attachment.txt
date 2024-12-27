@@ -1,0 +1,18 @@
+const responseJson=pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 400", function () {
+    pm.response.to.have.status(400);
+});
+
+pm.test("Status response is BAD_REQUEST", function(){
+    pm.expect(responseJson.status).to.eql("BAD_REQUEST")
+});
+
+pm.test("Error Message is: applicationModuleId: Application Module Id is mandatory.", function(){
+    pm.expect(responseJson.errors).to.include("applicationModuleId: Application Module Id is mandatory.");
+});
+
+pm.test("Path is /sustainability/v1/activityMappingsFetch", function(){
+    pm.expect(responseJson.path).to.eql("/sustainability/v1/activityMappingsFetch") 
+});

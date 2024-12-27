@@ -1,0 +1,18 @@
+const responseJson=pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 400", function () {
+    pm.response.to.have.status(400);
+});
+
+pm.test("Status response is BAD_REQUEST", function(){
+    pm.expect(responseJson.status).to.eql("BAD_REQUEST")
+});
+
+pm.test("Error Message is: dimensionId is mandatory and cannot be empty or blank..", function(){
+    pm.expect(responseJson.errors).to.include("dimensionGroups[0].groupMembers[0].dimensionId: Dimension Id is mandatory and cannot be empty or blank.");
+});
+
+pm.test("Path is /sustainability/v1/activityMappingsFetch", function(){
+    pm.expect(responseJson.path).to.eql("/sustainability/v1/activityMappingsFetch") 
+});

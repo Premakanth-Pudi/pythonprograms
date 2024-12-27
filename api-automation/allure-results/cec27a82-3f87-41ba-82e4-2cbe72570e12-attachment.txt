@@ -1,0 +1,33 @@
+{
+   "applicationModuleId":2002000000,
+   "mappingInterface":"Transportation",
+   "mappings":[
+      {
+         "dimensionGroup":{
+            "groupMembers":[
+               {
+                        "dimensionId": "TransitMode",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Road"
+                    },
+                    {
+                        "dimensionId": "EquipmentType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "20STD"
+                    },
+                    {
+                        "dimensionId": "FuelType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Diesel"
+                    }
+            ]
+         },
+         "mappedActivityIds":[
+           "freight_vehicle-vehicle_type_van_refrigerated-fuel_source_diesel_5_percent_biodiesel_blend-vehicle_weight_lte_3.5t-distance_uplift_included"
+         ]
+      }
+   ]
+}

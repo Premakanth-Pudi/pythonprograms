@@ -1,0 +1,19 @@
+{
+    "applicationModuleId" : "2002000014",
+    "mappingInterface": "Transportation",
+    "dimensionGroups": [
+        {"groupMembers": [
+        {
+            "dimensionId": "TransitMode",
+            "memberId": "Road"
+        },
+        {
+            "dimensionId": "EquipmentType",
+            "memberId": "48Ft"
+        },
+        {
+            "dimensionId": "FuelType",
+            "memberId": "Diesel"
+        }]}
+    ]
+}

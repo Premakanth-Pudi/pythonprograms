@@ -1,0 +1,18 @@
+const responseJson=pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 404", function () {
+    pm.response.to.have.status(404);
+});
+
+pm.test("Status response is NOT_FOUND", function(){
+    pm.expect(responseJson.status).to.eql("NOT_FOUND")
+});
+
+pm.test("Error Message is: No mapping interface found for given name 'invalid' and application-module '2002000000'", function(){
+    pm.expect(responseJson.errors).to.include("No mapping interface found for given name 'invalid' and application-module '2002000000'");
+});
+
+pm.test("Path is /sustainability/v1/activityMappingsFetch", function(){
+    pm.expect(responseJson.path).to.eql("/sustainability/v1/activityMappingsFetch") 
+});
