@@ -58,7 +58,8 @@ jobs:
       - name: Generate report
         run: |
           mkdir -p ./api-automation/allure-report  # Ensure the allure-report folder exists
-          allure generate ./api-automation/Reports/ -o ./api-automation/allure-report
+          allure generate ./api-automation/Reports/ -o ./api-automation/allure-report --clean
+
 
       - name: Rename report html
         run: |
