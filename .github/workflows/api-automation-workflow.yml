@@ -73,11 +73,11 @@ jobs:
           name: api-automation-report-artifact
           path: ./api-automation/allure-report
 
-      - name: Checkout reports branch
-        uses: actions/checkout@v2
-        with:
-          ref: master
-          fetch-depth: 0
+      # - name: Checkout reports branch
+      #   uses: actions/checkout@v2
+      #   with:
+      #     ref: master
+      #     fetch-depth: 0
           
       # - name: Download automation report artifact
       #   uses: actions/download-artifact@v4
