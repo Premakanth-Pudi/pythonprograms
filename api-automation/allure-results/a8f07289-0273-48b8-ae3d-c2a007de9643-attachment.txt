@@ -1,0 +1,28 @@
+{
+   "applicationModuleId":"2002000000",
+   "mappingInterface":"",
+   "dimensionGroups":[
+      {
+         "groupMembers":[
+            {
+                        "dimensionId": "TransitMode",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Road"
+                    },
+                    {
+                        "dimensionId": "EquipmentType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "20STD"
+                    },
+                    {
+                        "dimensionId": "FuelType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Diesel"
+                    }
+         ]
+      }
+   ]
+}

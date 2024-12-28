@@ -1,0 +1,18 @@
+const responseJson=pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 403", function () {
+    pm.response.to.have.status(403);
+});
+
+pm.test("Status response is FORBIDDEN", function(){
+    pm.expect(responseJson.status).to.eql("FORBIDDEN")
+});
+
+pm.test("Error Message is:Given application module '2002000004' either doesn't exist or is not entitled to be used.", function(){
+    pm.expect(responseJson.errors).to.include("Given application module '2002000004' either doesn't exist or is not entitled to be used.");
+});
+
+pm.test("Path is /sustainability/v1/applications/2002000004/dimensions", function(){
+    pm.expect(responseJson.path).to.eql("/sustainability/v1/applications/2002000004/dimensions") 
+});

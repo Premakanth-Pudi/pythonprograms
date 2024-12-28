@@ -1,0 +1,40 @@
+{
+    "applicationModuleId": "",
+    "mappingInterface": "Transportation",
+    "mappings": [
+        {
+            "dimensionGroup": {
+                "groupId": "625f1c72-b666-4d16-a0c7-332bd14d474d",
+                "groupMembers": [
+                    {
+                        "dimensionId": "TransitMode",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Road"
+                    },
+                    {
+                        "dimensionId": "EquipmentType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "20STD"
+                    },
+                    {
+                        "dimensionId": "FuelType",
+                        "hierarchyId": null,
+                        "levelId": null,
+                        "memberId": "Diesel"
+                    }
+                ]
+            },
+            "mappedSectorCategory": null,
+            "mappedActivityIds": [
+                "freight_vehicle-vehicle_type_van_refrigerated-fuel_source_diesel_5_percent_biodiesel_blend-vehicle_weight_lte_3.5t-distance_uplift_included"
+            ]
+        }
+    ],
+    "meta": {
+        "currentPage": 1,
+        "totalResults": 1,
+        "next": null
+    }
+}

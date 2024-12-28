@@ -1,0 +1,18 @@
+const responseJson=pm.response.json();
+console.log("Response: ", responseJson);
+
+pm.test("Status code is 405", function () {
+    pm.response.to.have.status(405);
+});
+
+pm.test("Status response is METHOD_NOT_ALLOWED", function(){
+    pm.expect(responseJson.status).to.eql("METHOD_NOT_ALLOWED")
+});
+
+pm.test("Error Message is: Method Not Allowed", function(){
+    pm.expect(responseJson.errors).to.include("Method Not Allowed");
+});
+
+pm.test("Path is /sustainability/v1/activityMappingsFetch", function(){
+    pm.expect(responseJson.path).to.eql("/sustainability/v1/activityMappingsFetch") 
+});

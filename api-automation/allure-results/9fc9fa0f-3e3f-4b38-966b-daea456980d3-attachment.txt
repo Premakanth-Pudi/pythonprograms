@@ -1,0 +1,3 @@
+var jsonData = pm.response.json();
+var token = jsonData.access_token;
+pm.environment.set("BEARER_TOKEN", token);

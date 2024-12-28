@@ -1,0 +1,14 @@
+const responseJson = pm.response.json();
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("Response Structure is Valid", function () {
+    pm.expect(responseJson).to.have.property("applicationModuleId");
+    pm.expect(responseJson).to.have.property("mappingInterface");
+    pm.expect(responseJson).to.have.property("mappings");
+    pm.expect(responseJson).to.have.property("meta");
+    pm.expect(responseJson.applicationModuleId).to.eql(2002000000);
+    pm.expect(responseJson.mappingInterface).to.eql("Transportation");
+
+});
