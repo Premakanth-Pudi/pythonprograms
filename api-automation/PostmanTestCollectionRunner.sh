@@ -1,36 +1,13 @@
-POSTMAN_COLLECTION_PATH="postman_collection.json"
-POSTMAN_ENVIRONMENT_PATH="postman_environment.json"
-REPORT_PATH="Reports"
-ALLURE_REPORT_PATH="allure-report"
+#!/bin/bash
 
-mkdir -p $REPORT_PATH
+# Set directory for reports and file names
+resfldr='Reports/'
+environment_filename="postman_environment.json"
+collection_filename="postman_collection.json"
 
-echo "Running Newman Collection..."
-newman run $POSTMAN_COLLECTION_PATH \
-  -e $POSTMAN_ENVIRONMENT_PATH \
-  --reporters cli,allure \
-  --reporter-allure-export $REPORT_PATH
+echo "Running Sustainability Svc API Automation Suite:"
+# Run the Postman collection with Newman and specify the report export directory
+newman run $collection_filename -e $environment_filename --verbose -r cli,allure --reporter-allure-export "$resfldr"
 
-if [ $? -eq 0 ]; then
-  echo "Postman tests passed successfully!"
-else
-  echo "Postman tests failed!"
-  echo "Contents of $REPORT_PATH after Newman run:"
-  ls -alh $REPORT_PATH
-  exit 1
-fi
-
-echo "Generating Allure Report..."
-allure generate $REPORT_PATH -o $ALLURE_REPORT_PATH || { echo "Allure report generation failed."; exit 1; }
-
-if [ ! -d "$ALLURE_REPORT_PATH" ] || [ -z "$(ls -A $ALLURE_REPORT_PATH)" ]; then
-  echo "ERROR: Allure report directory is empty or does not exist."
-  echo "Contents of $REPORT_PATH after Allure report generation:"
-  ls -alh $REPORT_PATH
-  exit 1
-fi
-
-echo "Reports directory contents:"
-ls -alh $REPORT_PATH
-echo "Allure report directory contents:"
-ls -alh $ALLURE_REPORT_PATH
+# Generate Allure report from the specified directory
+allure generate --clean $resfldr --report-name "Sustainability_Svc_Report
