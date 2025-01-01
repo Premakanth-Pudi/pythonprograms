@@ -1,0 +1,10 @@
+{
+    "Authorization": "Basic X0FVVEhfQ0xJRU5UX0lEXzpfQVVUSF9DTElFTlRfU0VDUkVUXw==",
+    "User-Agent": "PostmanRuntime/7.39.1",
+    "Accept": "*/*",
+    "Cache-Control": "no-cache",
+    "Postman-Token": "5e9ec2da-52c8-4a0b-9414-5da64f454c84",
+    "Host": "_auth_url_",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive"
+}
